@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['calendar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var queryString = encodeURIComponent('SELECT A, B OFFSET 1');
+        var dataSourceUrl = 'https://docs.google.com/spreadsheets/d/1jXH27iToSMPZ3aJjN44Fu_kg2QOuemraE_dIoc4r-28/gviz/tq?gid=0&headers=1&tq=' + queryString;
+
+        var query = new google.visualization.Query(dataSourceUrl);
+        query.send(handleQueryResponse);
+      }
+
+      function handleQueryResponse(response) {
+        if (response.isError()) {
+          alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+          return;
+        }
+
+        var dataTable = response.getDataTable();
+        var options = {
+          title: 'Running Progress',
+          height: 350,
+          calendar: {
+            cellSize: 10,
+            underYearSpace: 5, // Add space below the year labels.
+            dayOfWeekLabel: {
+              fontName: 'Times-Roman',
+              fontSize: 12,
+              color: '#1a8763',
+              bold: true,
+              italic: true
+            },
+            monthLabel: {
+              fontName: 'Times-Roman',
+              fontSize: 12,
+              color: '#981b48',
+              bold: true,
+              italic: true
+            }
+          },
+          colorAxis: {
+            minValue: 0,
+            maxValue: 10, // Set your maximum scale value for running distance
+            colors: ['#f7f7f7', '#1b5e20'] // Use only two colors for simplicity
+          }
+        };
+
+        var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
+        chart.draw(dataTable, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="calendar_basic" style="width: 1000px; height: 350px;"></div>
+  </body>
+</html>
