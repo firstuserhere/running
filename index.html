@@ -20,22 +20,24 @@
         }
 
         var dataTable = response.getDataTable();
-        var options = {
+
+        // Options for the first chart
+        var options1 = {
           title: 'Running Progress',
-          height: 350,
+          height: 1050,
           calendar: {
-            cellSize: 10,
-            underYearSpace: 5, // Add space below the year labels.
+            cellSize: 25,
+            underYearSpace: 5,
             dayOfWeekLabel: {
               fontName: 'Times-Roman',
-              fontSize: 12,
+              fontSize: 24,
               color: '#1a8763',
               bold: true,
               italic: true
             },
             monthLabel: {
               fontName: 'Times-Roman',
-              fontSize: 12,
+              fontSize: 16,
               color: '#981b48',
               bold: true,
               italic: true
@@ -43,17 +45,31 @@
           },
           colorAxis: {
             minValue: 0,
-            maxValue: 10, // Set your maximum scale value for running distance
-            colors: ['#f7f7f7', '#1b5e20'] // Use only two colors for simplicity
+            maxValue: 10,
+            colors: ['#f7f7f7', '#1b5e20']
           }
         };
 
-        var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
-        chart.draw(dataTable, options);
+        // Draw the first chart
+        var chart1 = new google.visualization.Calendar(document.getElementById('calendar_basic_top'));
+        chart1.draw(dataTable, options1);
+
+        // Options for the second chart with bigger cell and font size
+        var options2 = JSON.parse(JSON.stringify(options1));
+        options2.calendar.cellSize = 45; // Increase cell size
+        options2.calendar.dayOfWeekLabel.fontSize = 30; // Increase day of week font size
+        options2.calendar.monthLabel.fontSize = 30; // Increase month label font size
+
+        // Draw the second chart
+        var chart2 = new google.visualization.Calendar(document.getElementById('calendar_basic_bottom'));
+        chart2.draw(dataTable, options2);
       }
     </script>
   </head>
   <body>
-    <div id="calendar_basic" style="width: 1000px; height: 350px;"></div>
+    <div id="calendar_basic_top" style="width: 1000px; height: 350px;"></div>
+    <!-- Some space between the charts, if needed -->
+    <div style="height: 50px;"></div>
+    <div id="calendar_basic_bottom" style="width: 1000px; height: 350px;"></div>
   </body>
 </html>
